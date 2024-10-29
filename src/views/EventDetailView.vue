@@ -3,9 +3,16 @@ import { ref, onMounted,defineProps } from 'vue'
 import type {Event} from '@/types/Event'
 import EventService from '@/services/EventService'
 const event = ref<Event>()
-const id = ref<number>(5928101)
+//const id = ref<number>(5928101)
+const props = defineProps({
+  id: {
+    type: String,
+    required: true
+  }
+})
+
 onMounted(() => {
-  EventService.getEvent(id.value)
+  EventService.getEvent(props.id)
     .then((response) => {
       event.value = response.data
     })
