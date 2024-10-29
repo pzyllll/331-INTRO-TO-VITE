@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue"
-import { Event } from "@/type"
+//import { ref } from "vue"
+import type { Event } from "@/type";
 defineProps<{
   event:Event
 }>()
