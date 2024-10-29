@@ -1,23 +1,20 @@
 <script setup lang="ts">
-import StudentCard from '@/components/StudentCard.vue';
-import type { Event } from '@/type'
-import { ref,onMounted } from 'vue'
+import StudentCard from '@/components/StudentCard.vue'
+import type { Event } from '@/types'
+import { ref, onMounted } from 'vue'
 import StudentService from '@/services/StudentService'
 
 const events = ref<Event[]>([])
 onMounted(() => {
   StudentService.getEvents()
-    .then((response) => {
+    .then(response => {
       events.value = response.data
     })
-    .catch((error) => {
+    .catch(error => {
       console.error('There was an error!', error)
     })
 })
-
-
 </script>
-
 
 <template>
   <h1>Student Information</h1>
