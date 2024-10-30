@@ -4,8 +4,12 @@ import EventCategoriesAndOrganizer from '@/components/EventCategoriesAndOrganize
 import { type Event } from '@/types'
 import { onMounted, ref, computed,watchEffect} from 'vue'
 import EventService from '@/services/EventService'
+import { useRoute } from 'vue-router';
+import router from '@/router'
 
-//const events = ref<Event[]>([])
+
+
+
 const events = ref<Event[] | null>(null)
 const totalEvents = ref(0)
 const hasNexPage = computed(() => {
@@ -13,25 +17,32 @@ const hasNexPage = computed(() => {
   return page.value < totalPages
 })
 
-const props = defineProps({
-  page: {
-    type: Number,
-    required: true,
-  },
-})
-const page = computed(() => props.page)
+
+const route = useRoute();
+const itemsPerPage = ref(5); // 默认每页显示5条记录
+if (route.query.itemsPerPage) {
+  itemsPerPage.value = parseInt(route.query.itemsPerPage as string, 10);
+}
+
+// const props = defineProps({
+  // page: {
+    // type: Number,
+    // required: true,
+  // },
+// })
+//const page = computed(() => props.page)
+
+const props = defineProps<{
+  page: number;
+}>();
+
+const page = computed(() => props.page);
 
 onMounted(() => {
-  // EventService.getEvents(4, page.value)
-    // .then(response => {
-      // events.value = response.data
-    // })
-    // .catch(error => {
-      // console.error('There was an error!', error)
-    // })
+    
     watchEffect(() => {
     events.value = null
-    EventService.getEvents(2, page.value)
+    EventService.getEvents(itemsPerPage.value, page.value)
       .then((response) => {
         events.value = response.data
         totalEvents.value = response.headers['x-total-count']
@@ -40,8 +51,12 @@ onMounted(() => {
         console.error('There was an error!', error)
       })
   })
-
 })
+
+function navigateWithPageSize(size: number) {
+  router.push({ path: router.currentRoute.value.fullPath, query: { ...router.currentRoute.value.query, itemsPerPage: size } });
+}
+
 </script>
 
 <template>

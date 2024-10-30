@@ -1,6 +1,29 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+//import { RouterLink, RouterView } from 'vue-router'
 //import HelloWorld from './components/EventCard.vue'
+import { ref, watchEffect } from 'vue';
+import { RouterLink, useRouter, useRoute } from 'vue-router';
+const router = useRouter();
+const route = useRoute();
+
+const itemsPerPage = ref(5); // 默认每页显示5条记录
+
+
+watchEffect(() => {
+  if (route.query.itemsPerPage) {
+    itemsPerPage.value = parseInt(route.query.itemsPerPage as string, 10);
+  }
+});
+
+function navigateWithPageSize(size: number) {
+  router.push({ path: '/', query: { ...route.query, itemsPerPage: size } });
+}
+
+
+
+
+
+
 </script>
 
 <template>
@@ -11,14 +34,17 @@ import { RouterLink, RouterView } from 'vue-router'
           <RouterLink to="/">Event</RouterLink> |
           <RouterLink to="/about">About</RouterLink> |
           <RouterLink to="/student">Student</RouterLink>
-
+          <div>
+            <button @click="navigateWithPageSize(3)">Page Size: 3</button>
+          <button @click="navigateWithPageSize(4)">Page Size: 4</button>
+          <button @click="navigateWithPageSize(5)">Page Size: 5</button>
+        </div>
         </nav>
       </div>
     </header>
    
 
-    <RouterView />
-  </div>
+    <RouterView :itemsPerPage="itemsPerPage" />  </div>
 </template>
 
 <style >
@@ -49,5 +75,7 @@ h2 {
   font-size: 20px;
 }
 
+button{
 
+}
 </style>

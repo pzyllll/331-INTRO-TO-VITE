@@ -1,4 +1,7 @@
 export interface Event {
+     gpa: any
+     surname: any
+     name: any
      
      id: number
      category: string
