@@ -35,14 +35,14 @@ function navigateWithPageSize(size: number) {
           <RouterLink to="/about">About</RouterLink> |
           <RouterLink to="/student">Student</RouterLink>
           <div>
-            <button @click="navigateWithPageSize(3)">Page Size: 3</button>
-          <button @click="navigateWithPageSize(4)">Page Size: 4</button>
-          <button @click="navigateWithPageSize(5)">Page Size: 5</button>
+            <button class="page-size-btn" @click="navigateWithPageSize(3)">Page Size: 3</button>
+          <button class="page-size-btn" @click="navigateWithPageSize(4)">Page Size: 4</button>
+          <button class="page-size-btn" @click="navigateWithPageSize(5)">Page Size: 5</button>
         </div>
         </nav>
       </div>
     </header>
-   
+  
 
     <RouterView :itemsPerPage="itemsPerPage" />  </div>
 </template>
@@ -75,7 +75,32 @@ h2 {
   font-size: 20px;
 }
 
-button{
 
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
 }
+
+.page-size-btn {
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #42b983;
+  background-color: white;
+  color: #42b983;
+  transition: all 0.3s ease;
+}
+
+.page-size-btn.active {
+  background-color: white;
+  color: green;
+}
+
+.page-size-btn:hover {
+  background-color: white;
+  color: green;
+}
+
 </style>
